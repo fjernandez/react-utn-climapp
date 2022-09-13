@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { API_KEY } from "./api_key";
 import LocalWeather from './components/LocalWeather';
 import SevenDayWeather from "./components/SevenDayWeather";
+import LoadingSpinner from "./components/LoadingSpinnerComponent/LoadingSpinner";
 
 function App() {
 
@@ -32,12 +33,17 @@ function App() {
   }, []);
 
   const days = Object.values(forecastDays);
-  console.log(days);
 
   if (error) {
     return <> {error.message} </>
   } else if (!isLoading) {
-    return <> Cargando... </>
+    return (
+      <div className="wrapper">
+        <div className="wrapper-inner">
+          <LoadingSpinner></LoadingSpinner>
+        </div>
+      </div>
+    )
   } else {
     return (
       <div className='wrapper'>
@@ -51,10 +57,10 @@ function App() {
           <h1>Pronostico para los próximos 7 días</h1>
         </div>
         <section className="card-grid">
-            { days.map((items) => (
-              <SevenDayWeather key={items.date} days={items}></SevenDayWeather>
-            ))}
-          </section>
+          {days.map((items) => (
+            <SevenDayWeather key={items.date} days={items}></SevenDayWeather>
+          ))}
+        </section>
       </div>
     )
   }
